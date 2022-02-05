@@ -1,9 +1,10 @@
 import React from 'react'
 
-const Signup = () => {
+const Signup = ({ Signup, CurPage }) => {
   return (
     <div>
-      Signup
+      <h2>Signup</h2>
+      <button onClick={() => CurPage("login")}>Login</button>
     </div>
   )
 }
