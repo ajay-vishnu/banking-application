@@ -11,7 +11,10 @@ import java.time.LocalDateTime;
         uniqueConstraints = @UniqueConstraint(name = "unique_credit_transaction_id", columnNames = "transaction_id")
 )
 public class CreditAmount extends DefaultColumns {
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
     @JoinColumn(
             foreignKey = @ForeignKey(name = "account_number_of_amount_credited"),
             name = "accountnumber",

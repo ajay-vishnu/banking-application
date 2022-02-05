@@ -43,7 +43,10 @@ public class UserAccount extends DefaultColumns {
             columnDefinition = "Decimal(10,2) default '0.0'"
     )
     private Double accountBalance;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
     @JoinColumn(
             foreignKey = @ForeignKey(name = "username_of_account_holder"),
             name = "username",
