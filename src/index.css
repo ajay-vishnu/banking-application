@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap');
+
+@font-face {
+  font-family: 'Avenir';
+  src: local('Lato'), url(./fonts/AvenirNextLTPro/AvenirNextLTPro-Regular.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'Avenir';
+    font-weight: 700;
+    src: local('Lato'), url(./fonts/AvenirNextLTPro/AvenirNextLTPro-Bold.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'Avenir';
+    font-weight: 400;
+    src: local('Lato'), url(./fonts/AvenirNextLTPro/AvenirNextLTPro-Italic.otf) format('opentype');
+}
+:root {
+  --font-family: 'Manrope', sans-serif;
+
+  --gradient-text: linear-gradient(89.97deg, #AE67FA 1.84%, #F49867 102.67%);
+  --gradient-bar: linear-gradient(103.22deg, #AE67FA -13.86%, #F49867 99.55%);
+  
+  --color-bg: #eaeaea;
+  --color-footer : #adadae;
+  --color-blog: #323bae;
+  --color-text: #0a0b0e;
+  --color-subtext: #FF8A71;
+}
