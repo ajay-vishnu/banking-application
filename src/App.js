@@ -18,6 +18,10 @@ class App extends Component {
     password: "admin123"
   }
 
+  componentDidMount() {
+    fetch()
+  }
+
   LoginStatus = details => {
     console.log(details);
     if (this.state.curPage === "login") {
