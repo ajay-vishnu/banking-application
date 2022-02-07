@@ -26,14 +26,14 @@ public class ClientUserController {
 
     @DeleteMapping(path = "{username}")
     public void deleteClientUser(@PathVariable("username") String username,
-                                 @RequestParam String deletedBy) {
-        clientUserService.deleteClientUser(username, deletedBy);
+                                 @RequestParam String sessionId) {
+        clientUserService.deleteClientUser(username, sessionId);
     }
 
     @PutMapping(path = "{username}")
     public void updateClientUserPassword(@PathVariable("username") String username,
-                                         @RequestParam String updatedBy,
+                                         @RequestParam String sessionId,
                                          @RequestParam String password) {
-        clientUserService.updateClientUserPassword(username, password, updatedBy);
+        clientUserService.updateClientUserPassword(username, password, sessionId);
     }
 }

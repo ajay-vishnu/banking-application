@@ -17,7 +17,12 @@ public class ClientUserService {
     private ClientUserRepository clientUserRepository;
 
     public Optional<ClientUser> getClientUser(String username)  {
+
         return clientUserRepository.findClientUserByUsername(username);
+    }
+
+    public Optional<ClientUser> getClientUserByPassword(String username, String password)   {
+        return clientUserRepository.findClientUserByUsernameAndPassword(username, password);
     }
 
     public void addNewClientUser(ClientUserJson clientUserJson) {

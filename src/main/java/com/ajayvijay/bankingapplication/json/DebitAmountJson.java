@@ -5,7 +5,9 @@ public class DebitAmountJson {
     private Long transactionId;
     private Double debitAmount;
     private Double accountBalance;
+    private String transactionType;
     private String message;
+    private Long creditTo;
     private String createdBy;
 
     public String getCreatedBy() {
@@ -26,6 +28,14 @@ public class DebitAmountJson {
 
     public Double getAccountBalance() {
         return accountBalance;
+    }
+
+    public Long getCreditTo() {
+        return creditTo;
+    }
+
+    public String getTransactionType() {
+        return transactionType;
     }
 
     public String getMessage() {

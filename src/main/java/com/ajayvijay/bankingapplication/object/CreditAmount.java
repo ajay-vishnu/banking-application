@@ -46,23 +46,39 @@ public class CreditAmount extends DefaultColumns {
     )
     private String message;
 
-    @ManyToOne
+    @ManyToOne(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
     @JoinColumn(
             foreignKey = @ForeignKey(name = "username_of_account_holder_credit"),
-            name = "useraccount_id",
+            name = "sent_user_account",
             referencedColumnName = "accountNumber"
     )
-    private UserAccount useraccount;
+    private UserAccount sentUserAccount;
 
-    public UserAccount getUseraccount() {
-        return useraccount;
+    public UserAccount getSentUserAccount() {
+        return sentUserAccount;
     }
 
-    public void setUseraccount(UserAccount useraccount) {
-        this.useraccount = useraccount;
+    public void setSentUserAccount(UserAccount useraccount) {
+        this.sentUserAccount = useraccount;
     }
 
     public CreditAmount() {
+    }
+
+    public CreditAmount(UserAccount userAccount, Long transactionId, Double creditAmount, Double accountBalance, String message, UserAccount sentUserAccount, String createdBy) {
+        this.userAccount = userAccount;
+        this.transactionId = transactionId;
+        this.creditAmount = creditAmount;
+        this.accountBalance = accountBalance;
+        this.message = message;
+        this.sentUserAccount = sentUserAccount;
+        this.createdBy = createdBy;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+        this.updatedBy = createdBy;
     }
 
     public CreditAmount(UserAccount userAccount, Long transactionId, Double creditAmount, Double accountBalance, String message, String createdBy) {

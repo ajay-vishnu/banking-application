@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Entity(name = "Session")
 @Table(
         name = "session",
-        uniqueConstraints = @UniqueConstraint(name = "unique_private_key", columnNames = "privatekey")
+        uniqueConstraints = @UniqueConstraint(name = "unique_session_id", columnNames = "session_id")
 )
 public class Session extends DefaultColumns {
     @Column(
@@ -16,18 +16,7 @@ public class Session extends DefaultColumns {
             updatable = false
     )
     private String sessionId;
-    @Column(
-            name = "privatekey",
-            nullable = false,
-            updatable = false
-    )
-    private Long privateKey;
-    @Column(
-            name = "publickey",
-            nullable = false,
-            updatable = false
-    )
-    private Long publicKey;
+
     @OneToOne(
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY
@@ -42,26 +31,16 @@ public class Session extends DefaultColumns {
     public Session() {
     }
 
-    public Session(Long privateKey, Long publicKey, ClientUser clientUser) {
-        this.privateKey = privateKey;
-        this.publicKey = publicKey;
+    public Session(ClientUser clientUser, String sessionId) {
         this.clientUser = clientUser;
     }
 
-    public Long getPrivateKey() {
-        return privateKey;
+    public String getSessionId() {
+        return sessionId;
     }
 
-    public void setPrivateKey(Long privateKey) {
-        this.privateKey = privateKey;
-    }
-
-    public Long getPublicKey() {
-        return publicKey;
-    }
-
-    public void setPublicKey(Long publickey) {
-        this.publicKey = publickey;
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
     }
 
     public ClientUser getClientUser() {
@@ -81,8 +60,7 @@ public class Session extends DefaultColumns {
                 ", updatedBy='" + updatedBy + '\'' +
                 ", updatedAt=" + updatedAt +
                 ", isDeleted=" + isDeleted +
-                ", privateKey=" + privateKey +
-                ", publickey=" + publicKey +
+                ", sessionId='" + sessionId + '\'' +
                 ", clientUser=" + clientUser +
                 '}';
     }

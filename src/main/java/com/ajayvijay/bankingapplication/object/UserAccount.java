@@ -55,7 +55,7 @@ public class UserAccount extends DefaultColumns {
     private ClientUser clientUser;
     @JsonIgnore
     @OneToMany(
-            mappedBy = "useraccount",
+            mappedBy = "sentUserAccount",
             fetch = FetchType.LAZY
     )
     private List<CreditAmount> creditAmounts = new ArrayList<>();
@@ -74,6 +74,10 @@ public class UserAccount extends DefaultColumns {
         this.createdAt = LocalDateTime.now();
         this.updatedBy = createdBy;
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public ClientUser getClientUser() {
+        return clientUser;
     }
 
     public Long getAccountNumber() {
