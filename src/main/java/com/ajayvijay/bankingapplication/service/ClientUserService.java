@@ -44,6 +44,19 @@ public class ClientUserService {
         }
     }
 
+    public void addNewClientUser(ClientUser clientUser) {
+        if (clientUser.getCreatedBy() != null && clientUser.getCreatedBy().length() > 0)    {
+            Optional<ClientUser> clientUserOptional = clientUserRepository.findClientUserByUsername(clientUser.getUsername());
+            if (clientUserOptional.isPresent()) {
+                throw new IllegalStateException("Client User already exists!");
+            }
+            clientUserRepository.save(clientUser);
+        }
+        else    {
+            throw new IllegalStateException("Must mention the createdBy parameter to update the database.");
+        }
+    }
+
     public void deleteClientUser(String username, String deletedBy) {
         if (deletedBy != null && deletedBy.length() > 0)    {
             ClientUser clientUser = clientUserRepository.findClientUserByUsername(username).orElseThrow(() -> new IllegalStateException("Client user with username " + username + " does not exist."));

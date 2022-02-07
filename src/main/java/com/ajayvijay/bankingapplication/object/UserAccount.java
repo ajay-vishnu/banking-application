@@ -1,6 +1,7 @@
 package com.ajayvijay.bankingapplication.object;
 
 import com.ajayvijay.bankingapplication.attribute.DefaultColumns;
+import com.ajayvijay.bankingapplication.misc.AccountNumberGenerator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -44,12 +45,12 @@ public class UserAccount extends DefaultColumns {
     )
     private Double accountBalance;
     @OneToOne(
-            cascade = CascadeType.ALL,
             fetch = FetchType.LAZY
     )
     @JoinColumn(
             foreignKey = @ForeignKey(name = "username_of_account_holder"),
             name = "username",
+            nullable = false,
             referencedColumnName = "username"
     )
     private ClientUser clientUser;
@@ -63,13 +64,14 @@ public class UserAccount extends DefaultColumns {
     public UserAccount() {
     }
 
-    public UserAccount(Long accountNumber, String holderName, String phone, String holderAddress, String governmentId, Double accountBalance, String createdBy) {
-        this.accountNumber = accountNumber;
+    public UserAccount(String holderName, String phone, String holderAddress, String governmentId, Double accountBalance, ClientUser clientUser, String createdBy) {
+        this.accountNumber = AccountNumberGenerator.getAccountNumberGenerator().latestAccountNumber;
         this.holderName = holderName;
         this.phone = phone;
         this.holderAddress = holderAddress;
         this.governmentId = governmentId;
         this.accountBalance = accountBalance;
+        this.clientUser = clientUser;
         this.createdBy = createdBy;
         this.createdAt = LocalDateTime.now();
         this.updatedBy = createdBy;

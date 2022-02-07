@@ -1,7 +1,9 @@
 package com.ajayvijay.bankingapplication.service;
 
 import com.ajayvijay.bankingapplication.json.UserAccountJson;
+import com.ajayvijay.bankingapplication.object.ClientUser;
 import com.ajayvijay.bankingapplication.object.UserAccount;
+import com.ajayvijay.bankingapplication.repository.ClientUserRepository;
 import com.ajayvijay.bankingapplication.repository.UserAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,25 +16,40 @@ public class UserAccountService {
     @Autowired
     private UserAccountRepository userAccountRepository;
 
+    @Autowired
+    private ClientUserService clientUserService;
+
     public Optional<UserAccount> getUserAccount(Long accountNumber)   {
         return userAccountRepository.findUserAccountByAccountNumber(accountNumber);
     }
 
+    public Optional<UserAccount> getUserAccountByClientUser(ClientUser clientUser)  {
+        return userAccountRepository.findUserAccountByClientUser(clientUser);
+    }
+
+
     public void addNewAccountUser(UserAccountJson userAccountJson)  {
-        if (userAccountJson.getCreatedBy() != null && userAccountJson.getCreatedBy().length() > 0) {
+        if (userAccountJson.getUsername() != null && userAccountJson.getUsername().length() > 0) {
+            Optional<ClientUser> clientUserOptional = clientUserService.getClientUserByPassword(userAccountJson.getUsername(), userAccountJson.getPassword());
+            ClientUser clientUser = null;
+            if (!clientUserOptional.isPresent()) {
+                clientUser = new ClientUser(
+                        userAccountJson.getEmail(),
+                        userAccountJson.getUsername(),
+                        userAccountJson.getPassword(),
+                        userAccountJson.getUsername()
+                );
+                clientUserService.addNewClientUser(clientUser);
+            }
             UserAccount userAccount = new UserAccount(
-                    userAccountJson.getAccountNumber(),
                     userAccountJson.getHolderName(),
                     userAccountJson.getPhone(),
                     userAccountJson.getHolderAddress(),
                     userAccountJson.getGovernmentId(),
                     userAccountJson.getAccountBalance(),
-                    userAccountJson.getCreatedBy()
+                    clientUser,
+                    userAccountJson.getUsername()
             );
-            Optional<UserAccount> userAccountOptional = userAccountRepository.findUserAccountByAccountNumber(userAccountJson.getAccountNumber());
-            if (userAccountOptional.isPresent()) {
-                throw new IllegalStateException("User account with account number " + userAccountJson.getAccountNumber() + " already exists.");
-            }
             userAccountRepository.save(userAccount);
         }
         else    {

@@ -3,6 +3,7 @@ package com.ajayvijay.bankingapplication.object;
 import com.ajayvijay.bankingapplication.attribute.DefaultColumns;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity(name = "Session")
 @Table(
@@ -22,33 +23,35 @@ public class Session extends DefaultColumns {
             fetch = FetchType.LAZY
     )
     @JoinColumn(
-            name = "username",
-            referencedColumnName = "username",
+            name = "accountNumber",
+            referencedColumnName = "accountNumber",
+            nullable = false,
             foreignKey = @ForeignKey(name = "user_session_foreign_key")
     )
-    ClientUser clientUser;
+    UserAccount userAccount;
 
     public Session() {
     }
 
-    public Session(ClientUser clientUser, String sessionId) {
-        this.clientUser = clientUser;
+    public Session(UserAccount userAccount, String sessionId) {
+        this.sessionId = sessionId;
+        this.userAccount = userAccount;
+        this.createdBy = userAccount.getClientUser().getUsername();
+        this.createdAt = LocalDateTime.now();
+        this.updatedBy = userAccount.getClientUser().getUsername();
+        this.updatedAt = LocalDateTime.now();
     }
 
     public String getSessionId() {
         return sessionId;
     }
 
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
+    public UserAccount getClientUser() {
+        return userAccount;
     }
 
-    public ClientUser getClientUser() {
-        return clientUser;
-    }
-
-    public void setClientUser(ClientUser clientUser) {
-        this.clientUser = clientUser;
+    public void setClientUser(UserAccount userAccount) {
+        this.userAccount = userAccount;
     }
 
     @Override
@@ -61,7 +64,7 @@ public class Session extends DefaultColumns {
                 ", updatedAt=" + updatedAt +
                 ", isDeleted=" + isDeleted +
                 ", sessionId='" + sessionId + '\'' +
-                ", clientUser=" + clientUser +
+                ", clientUser=" + userAccount +
                 '}';
     }
 }

@@ -1,7 +1,9 @@
 package com.ajayvijay.bankingapplication.json;
 
 public class UserAccountJson {
-    private Long accountNumber;
+    private String username;
+    private String password;
+    private String email;
     private String holderName;
     private String holderAddress;
     private String governmentId;
@@ -9,12 +11,20 @@ public class UserAccountJson {
     private String createdBy;
     private String phone;
 
-    public String getCreatedBy() {
-        return createdBy;
+    public String getUsername() {
+        return username;
     }
 
-    public Long getAccountNumber() {
-        return accountNumber;
+    public String getPassword() {
+        return password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
     }
 
     public String getHolderName() {

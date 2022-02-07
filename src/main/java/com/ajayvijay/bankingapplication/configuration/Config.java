@@ -8,6 +8,7 @@ import com.ajayvijay.bankingapplication.repository.UserAccountRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 import java.util.List;
 
@@ -43,40 +44,44 @@ public class Config {
                     "Ajay Vishnu"
             );
             clientUserRepository.saveAll(List.of(vijay, prajwal, ajay, yashwanth));
+            ClientUser vijay1 = clientUserRepository.findClientUserByUsername("kira").orElseThrow(() -> new IllegalStateException("Find a better job to do."));
+            ClientUser prajwal1 = clientUserRepository.findClientUserByUsername("prajwalkb").orElseThrow(() -> new IllegalStateException("Find a better job to do."));
+            ClientUser ajay1 = clientUserRepository.findClientUserByUsername("ajayv").orElseThrow(() -> new IllegalStateException("Find a better job to do."));
+            ClientUser yashwanth1 = clientUserRepository.findClientUserByUsername("yashu").orElseThrow(() -> new IllegalStateException("Find a better job to do."));
             UserAccount vijayu = new UserAccount(
-                    1001001L,
                     "Vijay Biradar",
                     "7769034526",
                     "Mysuru, Karnataka",
                     "432456789876",
                     20324.56,
+                    vijay1,
                     "Ajay Vishnu"
             );
             UserAccount prajwalu = new UserAccount(
-                    1001002L,
                     "Prajwal K B",
                     "5986234526",
                     "Mandya, Karnataka",
                     "153875924682",
                     20987.56,
+                    prajwal1,
                     "Ajay Vishnu"
             );
             UserAccount ajayu = new UserAccount(
-                    1001003L,
                     "Ajay Vishnu V",
                     "7769456321",
                     "Davangere, Karnataka",
                     "785432569731",
                     20444.56,
+                    ajay1,
                     "Vijay Biradar"
             );
             UserAccount yashwanthu = new UserAccount(
-                    1001004L,
                     "Yashwanth M R",
                     "2597534526",
                     "Mysuru, Karnataka",
                     "468279137532",
                     20678.56,
+                    yashwanth1,
                     "Vijay Biradar"
             );
             userAccountRepository.saveAll(List.of(vijayu, prajwalu, ajayu, yashwanthu));
