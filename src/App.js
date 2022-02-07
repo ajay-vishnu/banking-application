@@ -20,15 +20,29 @@ class App extends Component {
 
   LoginStatus = details => {
     console.log(details);
-    if (details.email == this.adminUser.email && details.password == this.adminUser.password) {
-      console.log("logged in");
-      const updatedUser = this.state.user;
-      updatedUser.name = details.email;
-      updatedUser.email = details.password;
-      this.setState({user: updatedUser, curPage: "dash"});
-    } else  {
-      console.log("Details do not match!");
-      this.setState({error: "Details do not match!"});
+    if (this.state.curPage === "login") {
+      if (details.email == this.adminUser.email && details.password == this.adminUser.password) {
+        console.log("logged in");
+        const updatedUser = this.state.user;
+        updatedUser.name = details.email;
+        updatedUser.email = details.password;
+        this.setState({user: updatedUser, curPage: "dash"});
+      } else  {
+        console.log("Details do not match!");
+        this.setState({error: "Details do not match!"});
+      }
+    } else {
+      if (details.password === details.confirmpassword) {
+        console.log("signed up");
+        const updatedUser = this.state.user;
+        updatedUser.name = details.name;
+        updatedUser.email = details.email;
+        this.setState({user: updatedUser, curPage: "dash"});
+        console.log(details);
+      } else {
+        console.log("Passwords don't match. Try again!");
+        this.setState({error: "Passwords don't match. Try again!"});
+      }
     }
   }
 
