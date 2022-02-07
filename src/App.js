@@ -22,13 +22,11 @@ class App extends Component {
   }
 
   Deposit = details => {
-    console.log(this.state);
-    console.log(details);
     const transactionDetails = {
       userAccount: this.state.user.accountNumber,
       creditAmount: details.creditAmount,
       transactionType: "deposit",
-      message: details.message,
+      message: details.depositMessage,
       createdBy: this.state.user.username
     }
     axios
@@ -43,7 +41,22 @@ class App extends Component {
   }
 
   Withdraw = details => {
-    
+    const transactionDetails = {
+      userAccount: this.state.user.accountNumber,
+      debitAmount: details.debitAmount,
+      transactionType: "withdraw",
+      message: details.withdrawMessage,
+      createdBy: this.state.user.username
+    }
+    axios
+        .post("http://localhost:8080/api/v1/debitamount", transactionDetails)
+        .then(response => {
+          console.log(response)
+        })
+        .catch(error => {
+          console.log(error);
+          this.setState({error: "Invalid details"});
+        })
   }
 
   Transfer = details => {
