@@ -26,7 +26,7 @@ public class CreditAmount extends DefaultColumns {
             nullable = false,
             updatable = false
     )
-    private Long transactionId;
+    private String transactionId;
     @Column(
             name = "creditamount",
             nullable = false,
@@ -68,7 +68,7 @@ public class CreditAmount extends DefaultColumns {
     public CreditAmount() {
     }
 
-    public CreditAmount(UserAccount userAccount, Long transactionId, Double creditAmount, Double accountBalance, String message, UserAccount sentUserAccount, String createdBy) {
+    public CreditAmount(UserAccount userAccount, String transactionId, Double creditAmount, Double accountBalance, String message, UserAccount sentUserAccount, String createdBy) {
         this.userAccount = userAccount;
         this.transactionId = transactionId;
         this.creditAmount = creditAmount;
@@ -81,7 +81,7 @@ public class CreditAmount extends DefaultColumns {
         this.updatedBy = createdBy;
     }
 
-    public CreditAmount(UserAccount userAccount, Long transactionId, Double creditAmount, Double accountBalance, String message, String createdBy) {
+    public CreditAmount(UserAccount userAccount, String transactionId, Double creditAmount, Double accountBalance, String message, String createdBy) {
         this.userAccount = userAccount;
         this.transactionId = transactionId;
         this.creditAmount = creditAmount;
@@ -117,7 +117,7 @@ public class CreditAmount extends DefaultColumns {
         this.accountBalance = accountBalance;
     }
 
-    public String getMessage() {
+        public String getMessage() {
         return message;
     }
 

@@ -14,5 +14,5 @@ public interface CreditAmountRepository extends JpaRepository<CreditAmount, Doub
     List<CreditAmount> findAllByAccountNumber(UserAccount accountNumber);
 
     @Query("select c from CreditAmount c where c.isDeleted=false and c.transactionId=?1")
-    Optional<CreditAmount> findByTransactionId(Long transactionId);
+    Optional<CreditAmount> findByTransactionId(String transactionId);
 }

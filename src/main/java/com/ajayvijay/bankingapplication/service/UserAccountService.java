@@ -8,6 +8,7 @@ import com.ajayvijay.bankingapplication.repository.UserAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -27,6 +28,11 @@ public class UserAccountService {
         return userAccountRepository.findUserAccountByClientUser(clientUser);
     }
 
+    @Transactional
+    public void updateUserAccountBalance(UserAccount newUserAccount)   {
+        UserAccount userAccount = userAccountRepository.findUserAccountByAccountNumber(newUserAccount.getAccountNumber()).orElseThrow(() -> new IllegalStateException("User account number is invalid."));
+        userAccount.setAccountBalance(newUserAccount.getAccountBalance());
+    }
 
     public void addNewAccountUser(UserAccountJson userAccountJson)  {
         if (userAccountJson.getUsername() != null && userAccountJson.getUsername().length() > 0) {
@@ -41,6 +47,7 @@ public class UserAccountService {
                 );
                 clientUserService.addNewClientUser(clientUser);
             }
+            clientUser = clientUserService.getClientUser(userAccountJson.getUsername()).orElseThrow(() -> new IllegalStateException("Username doesn't exist."));
             UserAccount userAccount = new UserAccount(
                     userAccountJson.getHolderName(),
                     userAccountJson.getPhone(),

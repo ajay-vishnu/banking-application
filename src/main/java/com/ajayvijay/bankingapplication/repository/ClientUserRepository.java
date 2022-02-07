@@ -12,6 +12,6 @@ public interface ClientUserRepository extends JpaRepository<ClientUser, Long> {
     @Query("select c from ClientUser c where c.isDeleted=false and c.username=?1")
     Optional<ClientUser> findClientUserByUsername(String username);
 
-    @Query("select c from ClientUser c where c.isDeleted=false and c.username=?1 and c.password=?1")
+    @Query("select c from ClientUser c where c.isDeleted=false and c.username=?1 and c.password=?2")
     Optional<ClientUser> findClientUserByUsernameAndPassword(String username, String password);
 }

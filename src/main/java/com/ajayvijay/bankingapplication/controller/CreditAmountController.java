@@ -17,7 +17,7 @@ public class CreditAmountController {
     private CreditAmountService creditAmountService;
 
     @GetMapping(path = "{transactionId}")
-    public Optional<CreditAmount> getTransactionsById(@PathVariable("transactionId") Long transactionId)  {
+    public Optional<CreditAmount> getTransactionsById(@PathVariable("transactionId") String transactionId)  {
         return creditAmountService.getTransactionById(transactionId);
     }
 

@@ -8,6 +8,7 @@ import com.ajayvijay.bankingapplication.repository.DebitAmountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -36,46 +37,56 @@ public class DebitAmountService {
         if (debitAmountJson.getCreatedBy() != null && debitAmountJson.getCreatedBy().length() > 0) {
             if (debitAmountJson.getTransactionType() != null && Objects.equals(debitAmountJson.getTransactionType(), "withdraw")) {
                 UserAccount userAccount = userAccountService.getUserAccount(debitAmountJson.getUserAccount()).orElseThrow(() -> new IllegalStateException("User with account number " + debitAmountJson.getUserAccount() + " does not exist."));
+                Double accountBalance = userAccount.getAccountBalance() - debitAmountJson.getDebitAmount();
+                String transactionId = "D" + System.currentTimeMillis() + userAccount.getClientUser().getUsername();
                 DebitAmount debitAmount = new DebitAmount(
                         userAccount,
-                        debitAmountJson.getTransactionId(),
+                        transactionId,
                         debitAmountJson.getDebitAmount(),
-                        debitAmountJson.getAccountBalance(),
+                        accountBalance,
                         debitAmountJson.getMessage(),
-                        debitAmountJson.getCreatedBy()
+                        userAccount.getClientUser().getUsername()
                 );
                 Optional<DebitAmount> debitAmountOptional = debitAmountRepository.findByTransactionId(debitAmountJson.getTransactionId());
                 if (debitAmountOptional.isPresent()) {
                     throw new IllegalStateException("Transaction with ID " + debitAmountJson.getTransactionId() + " already completed.");
                 }
+                userAccount.setAccountBalance(accountBalance);
+                userAccount.setUpdatedAt(LocalDateTime.now());
+                userAccount.setUpdatedBy(userAccount.getClientUser().getUsername());
                 debitAmountRepository.save(debitAmount);
-            }
-            else if (debitAmountJson.getTransactionType() != null && Objects.equals(debitAmountJson.getTransactionType(), "transfer"))  {
+            } else if (debitAmountJson.getTransactionType() != null && Objects.equals(debitAmountJson.getTransactionType(), "transfer"))  {
                 UserAccount userAccount = userAccountService.getUserAccount(debitAmountJson.getUserAccount()).orElseThrow(() -> new IllegalStateException("User with account number " + debitAmountJson.getUserAccount() + " does not exist."));
                 UserAccount receivedUserAccount = userAccountService.getUserAccount(debitAmountJson.getCreditTo()).orElseThrow(() -> new IllegalStateException("User with account number " + debitAmountJson.getCreditTo() + " does not exist."));
+                Double accountBalance = userAccount.getAccountBalance() - debitAmountJson.getDebitAmount();
+                String transactionId = "T" + System.currentTimeMillis() + userAccount.getClientUser().getUsername();
                 DebitAmount debitAmount = new DebitAmount(
                         userAccount,
-                        debitAmountJson.getTransactionId(),
+                        transactionId,
                         debitAmountJson.getDebitAmount(),
-                        debitAmountJson.getAccountBalance(),
+                        accountBalance,
                         debitAmountJson.getMessage(),
                         receivedUserAccount,
-                        debitAmountJson.getCreatedBy()
+                        userAccount.getClientUser().getUsername()
                 );
                 Optional<DebitAmount> debitAmountOptional = debitAmountRepository.findByTransactionId(debitAmountJson.getTransactionId());
                 if (debitAmountOptional.isPresent()) {
                     throw new IllegalStateException("Transaction with ID " + debitAmountJson.getTransactionId() + " already completed.");
                 }
+                userAccount.setAccountBalance(accountBalance);
+                userAccount.setUpdatedAt(LocalDateTime.now());
+                userAccount.setUpdatedBy(userAccount.getClientUser().getUsername());
                 debitAmountRepository.save(debitAmount);
                 CreditAmountJson creditAmountJson = new CreditAmountJson(
                         debitAmountJson.getCreditTo(),
-                        debitAmountJson.getTransactionId(),
+                        transactionId,
                         debitAmountJson.getDebitAmount(),
                         "receive",
                         debitAmountJson.getMessage(),
                         debitAmountJson.getUserAccount(),
                         userAccount.getClientUser().getUsername()
                 );
+                creditAmountService.addNewTransaction(creditAmountJson);
             }
         }
         else    {
