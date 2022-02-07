@@ -5,10 +5,12 @@ import com.ajayvijay.bankingapplication.object.ClientUser;
 import com.ajayvijay.bankingapplication.object.Session;
 import com.ajayvijay.bankingapplication.repository.SessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
 
+@Service
 public class SessionService {
     @Autowired
     private SessionRepository sessionRepository;
