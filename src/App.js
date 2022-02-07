@@ -60,7 +60,23 @@ class App extends Component {
   }
 
   Transfer = details => {
-
+    const transactionDetails = {
+      userAccount: this.state.user.accountNumber,
+      creditTo: details.userAccount,
+      debitAmount: details.transferAmount,
+      transactionType: "transfer",
+      message: details.transferMessage,
+      createdBy: this.state.user.username
+    }
+    axios
+        .post("http://localhost:8080/api/v1/debitamount", transactionDetails)
+        .then(response => {
+          console.log(response)
+        })
+        .catch(error => {
+          console.log(error);
+          this.setState({error: "Invalid details"});
+        })
   }
 
   LoginStatus = details => {
