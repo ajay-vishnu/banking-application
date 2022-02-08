@@ -11,8 +11,8 @@ class App extends Component {
       email: "",
       sessionId: ""
     },
-    creditTransactions: {},
-    debitTransactions: {},
+    creditTransactions: [],
+    debitTransactions: [],
     error: "",
     curPage: "login"
   }
@@ -98,6 +98,7 @@ class App extends Component {
         .get("http://localhost:8080/api/v1/debitAmount/by/" + this.state.user.accountNumber)
         .then(response => {
           console.log(response.data);
+          this.setState({debitTransactions: response.data});
           this.UpdateAccountBalance();
         })
         .catch(error => {
@@ -111,6 +112,7 @@ class App extends Component {
         .get("http://localhost:8080/api/v1/creditAmount/by/" + this.state.user.accountNumber)
         .then(response => {
           console.log(response.data)
+          this.setState({creditTransactions: response.data});
           this.UpdateAccountBalance();
         })
         .catch(error => {
@@ -211,7 +213,7 @@ class App extends Component {
     return (
       <div className="App">
         {(this.state.curPage === "dash") ? (
-          <Dashboard Withdraw={this.Withdraw} Transfer={this.Transfer} Deposit={this.Deposit} UserDetails={this.state.user} Logout={this.Logout} />
+          <Dashboard Credits={this.state.creditTransactions} Debits={this.state.debitTransactions} Withdraw={this.Withdraw} Transfer={this.Transfer} Deposit={this.Deposit} UserDetails={this.state.user} Logout={this.Logout} />
         ) : (
           <div className="auth">
             <span className="gradient__text banking_application">Banking Application</span>
