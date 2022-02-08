@@ -28,11 +28,11 @@ public class DebitAmount extends DefaultColumns {
     )
     private String transactionId;
     @Column(
-            name = "creditamount",
+            name = "debitamount",
             nullable = false,
             updatable = false
     )
-    private Double creditAmount;
+    private Double debitAmount;
     @Column(
             name = "accountbalance",
             nullable = false,
@@ -68,10 +68,10 @@ public class DebitAmount extends DefaultColumns {
     public DebitAmount() {
     }
 
-    public DebitAmount(UserAccount userAccount, String transactionId, Double creditAmount, Double accountBalance, String message, UserAccount receivedUserAccount, String createdBy) {
+    public DebitAmount(UserAccount userAccount, String transactionId, Double debitAmount, Double accountBalance, String message, UserAccount receivedUserAccount, String createdBy) {
         this.userAccount = userAccount;
         this.transactionId = transactionId;
-        this.creditAmount = creditAmount;
+        this.debitAmount = debitAmount;
         this.accountBalance = accountBalance;
         this.message = message;
         this.receivedUserAccount = receivedUserAccount;
@@ -81,10 +81,10 @@ public class DebitAmount extends DefaultColumns {
         this.updatedBy = createdBy;
     }
 
-    public DebitAmount(UserAccount userAccount, String transactionId, Double creditAmount, Double accountBalance, String message, String createdBy) {
+    public DebitAmount(UserAccount userAccount, String transactionId, Double debitAmount, Double accountBalance, String message, String createdBy) {
         this.userAccount = userAccount;
         this.transactionId = transactionId;
-        this.creditAmount = creditAmount;
+        this.debitAmount = debitAmount;
         this.accountBalance = accountBalance;
         this.message = message;
         this.createdBy = createdBy;
@@ -101,12 +101,12 @@ public class DebitAmount extends DefaultColumns {
         this.userAccount = userAccount;
     }
 
-    public Double getCreditAmount() {
-        return creditAmount;
+    public Double getDebitAmount() {
+        return debitAmount;
     }
 
-    public void setCreditAmount(Double creditAmount) {
-        this.creditAmount = creditAmount;
+    public void setDebitAmount(Double creditAmount) {
+        this.debitAmount = creditAmount;
     }
 
     public Double getAccountBalance() {
@@ -135,7 +135,7 @@ public class DebitAmount extends DefaultColumns {
                 ", updatedAt=" + updatedAt +
                 ", isDeleted=" + isDeleted +
                 ", userAccount=" + userAccount +
-                ", creditAmount=" + creditAmount +
+                ", creditAmount=" + debitAmount +
                 ", accountBalance=" + accountBalance +
                 ", message='" + message + '\'' +
                 '}';

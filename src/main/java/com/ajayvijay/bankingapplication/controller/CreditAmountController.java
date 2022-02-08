@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @CrossOrigin
 @RestController
-@RequestMapping(path = "api/v1/creditamount")
+@RequestMapping(path = "api/v1/creditAmount")
 public class CreditAmountController {
     @Autowired
     private CreditAmountService creditAmountService;

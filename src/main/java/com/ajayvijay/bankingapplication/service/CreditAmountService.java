@@ -40,7 +40,7 @@ public class CreditAmountService {
                         transactionId,
                         creditAmountJson.getCreditAmount(),
                         accountBalance,
-                        creditAmountJson.getTransactionType(),
+                        creditAmountJson.getMessage(),
                         userAccount.getClientUser().getUsername()
                 );
                 Optional<CreditAmount> creditAmountOptional = creditAmountRepository.findByTransactionId(creditAmountJson.getTransactionId());
@@ -61,7 +61,7 @@ public class CreditAmountService {
                         creditAmountJson.getTransactionId(),
                         creditAmountJson.getCreditAmount(),
                         accountBalance,
-                        creditAmountJson.getTransactionType(),
+                        creditAmountJson.getMessage(),
                         senderUserAccount,
                         userAccount.getClientUser().getUsername()
                 );
