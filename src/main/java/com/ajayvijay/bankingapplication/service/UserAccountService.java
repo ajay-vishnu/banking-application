@@ -20,6 +20,9 @@ public class UserAccountService {
     @Autowired
     private ClientUserService clientUserService;
 
+    @Autowired
+    private EmailSenderService emailSenderService;
+
     public Optional<UserAccount> getUserAccount(Long accountNumber)   {
         return userAccountRepository.findUserAccountByAccountNumber(accountNumber);
     }
@@ -58,6 +61,10 @@ public class UserAccountService {
                     userAccountJson.getUsername()
             );
             userAccountRepository.save(userAccount);
+            emailSenderService.sendSimpleEmail(
+                    clientUser.getEmail(),
+                    userAccountJson.getHolderName()
+            );
         }
         else    {
             throw new IllegalStateException("Must mention the createdBy parameter to update the database.");
