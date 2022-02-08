@@ -11,14 +11,10 @@ class App extends Component {
       email: "",
       sessionId: ""
     },
-    transaction: {},
+    creditTransactions: {},
+    debitTransactions: {},
     error: "",
     curPage: "login"
-  }
-  
-  adminUser = {
-    email: "admin@admin.com",
-    password: "admin123"
   }
 
   Deposit = details => {
@@ -30,14 +26,15 @@ class App extends Component {
       createdBy: this.state.user.username
     }
     axios
-        .post("http://localhost:8080/api/v1/creditamount", transactionDetails)
+        .post("http://localhost:8080/api/v1/creditAmount", transactionDetails)
         .then(response => {
           console.log(response)
         })
         .catch(error => {
           console.log(error);
           this.setState({error: "Invalid details"});
-        })
+        });
+    this.UpdateCreditTransactions();
   }
 
   Withdraw = details => {
@@ -49,14 +46,15 @@ class App extends Component {
       createdBy: this.state.user.username
     }
     axios
-        .post("http://localhost:8080/api/v1/debitamount", transactionDetails)
+        .post("http://localhost:8080/api/v1/debitAmount", transactionDetails)
         .then(response => {
           console.log(response)
         })
         .catch(error => {
           console.log(error);
           this.setState({error: "Invalid details"});
-        })
+        });
+    this.UpdateDebitTransactions();
   }
 
   Transfer = details => {
@@ -69,9 +67,25 @@ class App extends Component {
       createdBy: this.state.user.username
     }
     axios
-        .post("http://localhost:8080/api/v1/debitamount", transactionDetails)
+        .post("http://localhost:8080/api/v1/debitAmount", transactionDetails)
         .then(response => {
           console.log(response)
+        })
+        .catch(error => {
+          console.log(error);
+          this.setState({error: "Invalid details"});
+        });
+    this.UpdateDebitTransactions();
+  }
+
+  UpdateAccountBalance = () => {
+    axios
+        .get("http://localhost:8080/api/v1/userAccount/" + this.state.user.accountNumber)
+        .then(response => {
+          console.log(response.data);
+          const updatedUser = this.state.user;
+          updatedUser.accountBalance = response.data.accountBalance;
+          this.setState({user: updatedUser});
         })
         .catch(error => {
           console.log(error);
@@ -79,10 +93,34 @@ class App extends Component {
         })
   }
 
+  UpdateDebitTransactions = () => {
+    axios
+        .get("http://localhost:8080/api/v1/debitAmount/by/" + this.state.user.accountNumber)
+        .then(response => {
+          console.log(response.data);
+          this.UpdateAccountBalance();
+        })
+        .catch(error => {
+          console.log(error);
+          this.setState({error: "Invalid details"});
+        });
+  }
+
+  UpdateCreditTransactions = () => {
+    axios
+        .get("http://localhost:8080/api/v1/creditAmount/by/" + this.state.user.accountNumber)
+        .then(response => {
+          console.log(response.data)
+          this.UpdateAccountBalance();
+        })
+        .catch(error => {
+          console.log(error);
+          this.setState({error: "Invalid details"});
+        });
+  }
+
   LoginStatus = details => {
-    console.log(this.state);
-    console.log(details);
-    if (this.state.curPage === "login") {
+    if (this.state.curPage === "login")   {
       const userDetails = {
         username: details.email,
         password: details.password
@@ -138,9 +176,7 @@ class App extends Component {
   }
 
   ValidStatusLogin = response => {
-    console.log(response.data);
     if (response.data.sessionId !== "") {
-      console.log("logged in");
       const updatedUser = this.state.user;
       updatedUser.name = response.data.clientUser.holderName;
       updatedUser.email = response.data.clientUser.clientUser.email;
@@ -150,6 +186,8 @@ class App extends Component {
       updatedUser.accountBalance = response.data.clientUser.accountBalance;
       updatedUser.phone = response.data.clientUser.phone;
       this.setState({user: updatedUser, curPage: "dash"});
+      this.UpdateCreditTransactions();
+      this.UpdateDebitTransactions();
     } else  {
       console.log("Details do not match!");
       this.setState({error: "Details do not match!"});
